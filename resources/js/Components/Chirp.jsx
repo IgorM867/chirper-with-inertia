@@ -10,7 +10,6 @@ dayjs.extend(relativeTime);
 
 export default function Chirp({ chirp }) {
     const { auth } = usePage().props;
-    console.log(auth);
     const [editing, setEditing] = useState(false);
 
     const { data, setData, patch, clearErrors, reset, errors } = useForm({
@@ -73,6 +72,13 @@ export default function Chirp({ chirp }) {
                                 >
                                     Edit
                                 </button>
+                                <Dropdown.Link
+                                    as="button"
+                                    href={route("chirps.destroy", chirp.id)}
+                                    method="delete"
+                                >
+                                    Delete
+                                </Dropdown.Link>
                             </Dropdown.Content>
                         </Dropdown>
                     )}
