@@ -4,7 +4,7 @@ import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { useForm, usePage } from "@inertiajs/react";
+import { Link, useForm, usePage } from "@inertiajs/react";
 
 dayjs.extend(relativeTime);
 
@@ -41,7 +41,14 @@ export default function Chirp({ chirp }) {
             <div className="flex-1">
                 <div className="flex justify-between items-center">
                     <div>
-                        <span className="text-gray-800">{chirp.user.name}</span>
+                        <Link
+                            href={route("profile.show", chirp.user.id)}
+                            className="hover:underline"
+                        >
+                            <span className="text-gray-800">
+                                {chirp.user.name}
+                            </span>
+                        </Link>
                         <small className="ml-2 text-sm text-gray-600">
                             {dayjs(chirp.created_at).fromNow()}
                         </small>
