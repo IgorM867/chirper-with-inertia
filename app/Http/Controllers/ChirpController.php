@@ -17,7 +17,12 @@ class ChirpController extends Controller
     public function index(): Response
     {
         return Inertia::render("Chirps/Index", [
-            'chirps' => Chirp::with('user:id,name')->latest()->get()
+            'chirps' => Chirp::with('user:id,name')->latest()->get()->map(function ($chirp) {
+                $user = auth()->user();
+                $chirp['liked'] = $chirp->likes()->where('user_id', $user->id)->exists();
+                $chirp['like_count'] = $chirp->likes()->count();
+                return $chirp;
+            })
         ]);
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +30,10 @@ Route::middleware('auth')->group(function () {
 Route::resource("chirps", ChirpController::class)
     ->only('index', "store", "update", "destroy")
     ->middleware('auth', 'verified');
+
+Route::middleware("auth")->group(function () {
+    Route::post('/chirps/{chirp}/like', [LikeController::class, 'store'])->name('chirps.like');
+    Route::delete('/chirps/{chirp}/unlike', [LikeController::class, 'destroy'])->name('chirps.unlike');
+});
 
 require __DIR__ . '/auth.php';
