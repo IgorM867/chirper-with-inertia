@@ -1,13 +1,21 @@
 import Chirp from "@/Components/Chirp";
+import FollowButton from "@/Components/FollowButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
-export default function Show({ auth, chirps, user }) {
+export default function Show({ auth, chirps, user, followed }) {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    {user.name}
+                <h2 className="text-3xl font-semibold leading-tight text-gray-800 flex items-center gap-4">
+                    {user.name}{" "}
+                    {auth.user.id !== user.id && (
+                        <FollowButton
+                            isFollowed={followed}
+                            username={user.name}
+                            userId={user.id}
+                        />
+                    )}
                 </h2>
             }
         >

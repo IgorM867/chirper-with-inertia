@@ -17,9 +17,12 @@ class ProfileController extends Controller
 {
     public function show(Request $request, string $id): Response
     {
+        $user = auth()->user();
+
         return Inertia::render('Profile/Show', [
             "chirps" => Chirp::with('user:id,name')->where('user_id', $id)->get(),
-            'user' => User::where('id', $id)->first('name')
+            'user' => User::where('id', $id)->first(["id", "name"]),
+            "followed" => $user->isFollowing($id)
         ]);
     }
     /**
