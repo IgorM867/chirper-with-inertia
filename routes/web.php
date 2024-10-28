@@ -4,7 +4,9 @@ use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Chirp;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,10 +24,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile',  'edit')->name('profile.edit');
+        Route::get('/profile/{id}', 'show')->name('profile.show');
+        Route::patch('/profile', 'update')->name('profile.update');
+        Route::delete('/profile', 'destroy')->name('profile.destroy');
+    });
+
     Route::post('/profile/{id}/follow', [FollowController::class, 'follow'])->name('follows.follow');
     Route::delete('/profile/{id}/unfollow', [FollowController::class, 'unfollow'])->name('follows.unfollow');
 });
@@ -38,5 +43,25 @@ Route::middleware("auth")->group(function () {
     Route::post('/chirps/{chirp}/like', [LikeController::class, 'store'])->name('chirps.like');
     Route::delete('/chirps/{chirp}/unlike', [LikeController::class, 'destroy'])->name('chirps.unlike');
 });
+
+Route::get('/following', function (Request $request) {
+    return Inertia::render(
+        'Following',
+        [
+            'chirps' =>  Chirp::with('user:id,name')
+                ->join('follows', 'chirps.user_id', 'follows.following_id')
+                ->where('follower_id', $request->user()->id)
+                ->select("chirps.*")
+                ->latest()
+                ->get()
+                ->map(function ($chirp) {
+                    $user = auth()->user();
+                    $chirp['liked'] = $chirp->likes()->where('user_id', $user->id)->exists();
+                    $chirp['like_count'] = $chirp->likes()->count();
+                    return $chirp;
+                })
+        ]
+    );
+})->middleware(['auth', 'verified'])->name('following');
 
 require __DIR__ . '/auth.php';
