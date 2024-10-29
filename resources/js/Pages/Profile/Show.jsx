@@ -7,16 +7,34 @@ export default function Show({ auth, chirps, user, followed }) {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-3xl font-semibold leading-tight text-gray-800 flex items-center gap-4">
-                    {user.name}{" "}
-                    {auth.user.id !== user.id && (
-                        <FollowButton
-                            isFollowed={followed}
-                            username={user.name}
-                            userId={user.id}
-                        />
-                    )}
-                </h2>
+                <header>
+                    <div className="flex items-center gap-5 pb-3">
+                        <h2 className="inline-block text-3xl font-semibold leading-tight text-gray-800">
+                            {user.name}{" "}
+                        </h2>
+                        {auth.user.id !== user.id && (
+                            <FollowButton
+                                isFollowed={followed}
+                                username={user.name}
+                                userId={user.id}
+                            />
+                        )}
+                    </div>
+                    <div className="flex gap-5">
+                        <p>
+                            <span className="font-bold">
+                                {user.followings_count}
+                            </span>{" "}
+                            Following
+                        </p>
+                        <p>
+                            <span className="font-bold">
+                                {user.followers_count}
+                            </span>{" "}
+                            Followers
+                        </p>
+                    </div>
+                </header>
             }
         >
             <Head title="Chirps" />

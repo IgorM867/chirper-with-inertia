@@ -30,7 +30,11 @@ class ProfileController extends Controller
                     $chirp['like_count'] = $chirp->likes()->count();
                     return $chirp;
                 }),
-            'user' => User::where('id', $id)->first(["id", "name"]),
+            'user' => User::select('id', 'name')
+                ->withCount("followings")
+                ->withCount('followers')
+                ->where('users.id', $id)
+                ->first(),
             "followed" => $user->isFollowing($id)
         ]);
     }

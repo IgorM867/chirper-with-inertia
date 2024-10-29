@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm, Head } from "@inertiajs/react";
 import Chirp from "@/Components/Chirp";
 
-function Following({ auth, chirps }) {
+function Following({ chirps }) {
     const { data, setData, post, processing, reset, errors } = useForm({
         message: "",
     });
@@ -13,8 +13,6 @@ function Following({ auth, chirps }) {
         e.preventDefault();
         post(route("chirps.store"), { onSuccess: () => reset() });
     };
-
-    console.log(chirps);
 
     return (
         <AuthenticatedLayout>
