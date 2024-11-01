@@ -51,9 +51,9 @@ class ChirpController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Chirp $chirp)
+    public function show(Chirp $chirp): Response
     {
-        //
+        return Inertia::render("Chirps/Show", ['chirp' => $chirp->load('user:id,name')]);
     }
 
     /**

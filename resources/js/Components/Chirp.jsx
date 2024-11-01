@@ -14,7 +14,11 @@ export default function Chirp({ chirp }) {
     const [editing, setEditing] = useState(false);
 
     return (
-        <div className="p-6 flex space-x-2">
+        <Link
+            href={route("chirps.show", chirp)}
+            className="p-6 flex space-x-2 cursor-pointer
+            hover:backdrop-brightness-90"
+        >
             <MessageIcon />
             <div className="flex-1">
                 <div className="flex justify-between items-center">
@@ -22,6 +26,7 @@ export default function Chirp({ chirp }) {
                         <Link
                             href={route("profile.show", chirp.user.id)}
                             className="hover:underline"
+                            as="button"
                         >
                             <span className="text-gray-800">
                                 {chirp.user.name}
@@ -62,6 +67,6 @@ export default function Chirp({ chirp }) {
                     </>
                 )}
             </div>
-        </div>
+        </Link>
     );
 }
