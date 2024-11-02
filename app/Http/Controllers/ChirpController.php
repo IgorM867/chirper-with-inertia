@@ -53,7 +53,18 @@ class ChirpController extends Controller
      */
     public function show(Chirp $chirp): Response
     {
-        return Inertia::render("Chirps/Show", ['chirp' => $chirp->load('user:id,name')]);
+        return Inertia::render(
+            "Chirps/Show",
+            [
+                'chirp' => $chirp->load([
+                    'user:id,name',
+                    'comments' => function ($query) {
+                        $query->latest();
+                    },
+                    'comments.user:id,name'
+                ])
+            ]
+        );
     }
 
     /**

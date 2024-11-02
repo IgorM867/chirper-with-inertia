@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
@@ -42,7 +43,9 @@ Route::resource("chirps", ChirpController::class)
 Route::middleware("auth")->group(function () {
     Route::post('/chirps/{chirp}/like', [LikeController::class, 'store'])->name('chirps.like');
     Route::delete('/chirps/{chirp}/unlike', [LikeController::class, 'destroy'])->name('chirps.unlike');
+    Route::post('/chirps/{chirp}/comment', [CommentController::class, 'store'])->name('chirps.comment');
 });
+
 
 Route::get('/following', function (Request $request) {
     return Inertia::render(

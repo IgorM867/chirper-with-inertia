@@ -24,6 +24,11 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     /**
      * Users that the current user is following.
      */
