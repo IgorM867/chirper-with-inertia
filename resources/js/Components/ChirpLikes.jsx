@@ -18,12 +18,14 @@ function ChirpLikes({ chirpId, initialLiked, initalLikeCount }) {
         setLiked(true);
         setLikeCount((prev) => prev + 1);
     };
-    const unLike = () => {
+    const unLike = (e) => {
         setLiked(false);
         setLikeCount((prev) => prev - 1);
     };
 
-    const toggleLike = () => {
+    const toggleLike = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (liked) {
             const url = route("chirps.unlike", chirpId);
             router.delete(url, {
