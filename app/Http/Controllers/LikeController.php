@@ -30,9 +30,8 @@ class LikeController extends Controller
     {
         $user = auth()->user();
 
-        // Remove the like
         $chirp->likes()->where('user_id', $user->id)->delete();
 
-        return back(); // Or send JSON response
+        return back();
     }
 }

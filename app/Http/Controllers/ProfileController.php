@@ -22,14 +22,10 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Show', [
             'chirps' => Chirp::with('user:id,name')
                 ->where('user_id', $id)
+                ->withCount('likes')
+                ->withExists('likes as liked')
                 ->latest()
-                ->get()
-                ->map(function ($chirp) {
-                    $user = auth()->user();
-                    $chirp['liked'] = $chirp->likes()->where('user_id', $user->id)->exists();
-                    $chirp['like_count'] = $chirp->likes()->count();
-                    return $chirp;
-                }),
+                ->get(),
             'user' => User::select('id', 'name')
                 ->withCount("followings")
                 ->withCount('followers')

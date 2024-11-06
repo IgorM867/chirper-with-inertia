@@ -55,14 +55,10 @@ Route::get('/following', function (Request $request) {
                 ->join('follows', 'chirps.user_id', 'follows.following_id')
                 ->where('follower_id', $request->user()->id)
                 ->select("chirps.*")
+                ->withCount('likes')
+                ->withExists('likes as liked')
                 ->latest()
                 ->get()
-                ->map(function ($chirp) {
-                    $user = auth()->user();
-                    $chirp['liked'] = $chirp->likes()->where('user_id', $user->id)->exists();
-                    $chirp['like_count'] = $chirp->likes()->count();
-                    return $chirp;
-                })
         ]
     );
 })->middleware(['auth', 'verified'])->name('following');

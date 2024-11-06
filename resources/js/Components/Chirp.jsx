@@ -62,7 +62,7 @@ export default function Chirp({ chirp }) {
                         <ChirpLikes
                             chirpId={chirp.id}
                             initialLiked={chirp.liked}
-                            initalLikeCount={chirp.like_count}
+                            initalLikeCount={chirp.likes_count}
                         />
                     </>
                 )}
