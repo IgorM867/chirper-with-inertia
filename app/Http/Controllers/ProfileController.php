@@ -23,7 +23,9 @@ class ProfileController extends Controller
             'chirps' => Chirp::with('user:id,name')
                 ->where('user_id', $id)
                 ->withCount('likes')
-                ->withExists('likes as liked')
+                ->withExists(['likes as liked' => function ($query) {
+                    $query->where('user_id', auth()->id());
+                }])
                 ->latest()
                 ->get(),
             'user' => User::select('id', 'name')

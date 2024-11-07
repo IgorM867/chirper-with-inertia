@@ -56,7 +56,9 @@ Route::get('/following', function (Request $request) {
                 ->where('follower_id', $request->user()->id)
                 ->select("chirps.*")
                 ->withCount('likes')
-                ->withExists('likes as liked')
+                ->withExists(['likes as liked' => function ($query) {
+                    $query->where('user_id', auth()->id());
+                }])
                 ->latest()
                 ->get()
         ]
