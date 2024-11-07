@@ -55,7 +55,7 @@ Route::get('/following', function (Request $request) {
                 ->join('follows', 'chirps.user_id', 'follows.following_id')
                 ->where('follower_id', $request->user()->id)
                 ->select("chirps.*")
-                ->withCount('likes')
+                ->withCount(['likes', "comments"])
                 ->withExists(['likes as liked' => function ($query) {
                     $query->where('user_id', auth()->id());
                 }])

@@ -6,6 +6,7 @@ import EditChirpForm from "./EditChirpForm";
 import ChirpMenu from "./ChirpMenu";
 import ChirpLikes from "./ChirpLikes";
 import MessageIcon from "./MessageIcon";
+import ChirpCommentsNum from "./ChirpCommentsNum";
 
 dayjs.extend(relativeTime);
 
@@ -59,11 +60,16 @@ export default function Chirp({ chirp }) {
                         <p className="mt-4 text-lg text-gray-900">
                             {chirp.message}
                         </p>
-                        <ChirpLikes
-                            chirpId={chirp.id}
-                            initialLiked={chirp.liked}
-                            initalLikeCount={chirp.likes_count}
-                        />
+                        <div className="p-2 flex gap-3">
+                            <ChirpLikes
+                                chirpId={chirp.id}
+                                initialLiked={chirp.liked}
+                                initalLikeCount={chirp.likes_count}
+                            />
+                            <ChirpCommentsNum
+                                commentsCount={chirp.comments_count}
+                            />
+                        </div>
                     </>
                 )}
             </div>

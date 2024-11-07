@@ -18,7 +18,7 @@ class ChirpController extends Controller
     {
         return Inertia::render("Chirps/Index", [
             'chirps' => Chirp::with('user:id,name')
-                ->withCount('likes')
+                ->withCount(['likes', 'comments'])
                 ->withExists(['likes as liked' => function ($query) {
                     $query->where('user_id', auth()->id());
                 }])
@@ -64,7 +64,7 @@ class ChirpController extends Controller
                     },
                     'comments.user:id,name'
                 ])
-                    ->loadCount('likes')
+                    ->loadCount(['likes', 'comments'])
                     ->loadExists(['likes as liked' => function ($query) {
                         $query->where('user_id', auth()->id());
                     }])
